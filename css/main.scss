@@ -1,0 +1,28 @@
+:root {
+  --color: #fefdfd;
+  --off-color: rgba(255,255,255, .6);
+  --primary-color: #1819cd;
+}
+
+@import './components/calendar';
+@import './components/current-day';
+@import './components/button';
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  font-family: 'Poppins', 'Trebuchet MS', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #FEFDFD;
+  display: flex;
+  @media (orientation: landscape) {
+    background-color: red;
+  }
+}

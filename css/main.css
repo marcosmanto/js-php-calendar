@@ -1,0 +1,76 @@
+:root {
+  --color: #fefdfd;
+  --off-color: rgba(255,255,255, .6);
+  --primary-color: #1819cd;
+}
+
+.current-day {
+  cursor: default;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--color);
+  width: 34%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.current-day__title {
+  color: var(--off-color);
+  font-size: calc(1vh + 2.5rem);
+  padding: 10vh 0 2vh;
+  border-bottom: 1px solid var(--off-color);
+  margin-bottom: 3vh;
+  font-weight: 400;
+}
+.current-day__subtitle {
+  font-size: calc(1vh + 2.6rem);
+  padding: 0 0 3vh;
+  font-weight: 300;
+}
+.current-day__day-info {
+  font-size: calc(1vh + 2.7rem);
+  padding: 0 0 2vh;
+  font-weight: 600;
+}
+.current-day__heading {
+  padding: 3vh 0 3vh;
+}
+
+.btn {
+  border-radius: 150px;
+  outline: none;
+  margin: 0 auto;
+  background-color: transparent;
+  display: block;
+  padding: 1vh 5vh;
+  color: var(--color);
+  border: 3px solid var(--color);
+  font-size: calc(1vh + 1rem);
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: white;
+  opacity: 0.4;
+  color: black;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  font-family: "Poppins", "Trebuchet MS", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #FEFDFD;
+  display: flex;
+}
+@media (orientation: landscape) {
+  body {
+    background-color: red;
+  }
+}/*# sourceMappingURL=main.css.map */
