@@ -4,19 +4,149 @@
   --primary-color: #1819cd;
 }
 
+.calendar {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(1vh + 1rem);
+  cursor: default;
+}
+.calendar__wrapper {
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+  width: 90%;
+  min-width: 365px;
+  display: flex;
+  flex-direction: column;
+  height: 82vh;
+  max-height: 82vh;
+  padding: 1px;
+  background-color: var(--primary-color);
+  box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.15);
+}
+.calendar__title {
+  color: var(--primary-color);
+  font-size: calc(1.25vh + 2rem);
+  font-weight: 400;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+}
+.calendar__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.calendar__month {
+  padding: 0 3rem;
+}
+.calendar__prev-month, .calendar__next-month {
+  font-size: 1em;
+  cursor: pointer;
+}
+.calendar__prev-month:hover, .calendar__next-month:hover {
+  opacity: 0.6;
+}
+.calendar__header {
+  background-color: var(--primary-color);
+  width: 100%;
+  text-align: center;
+  color: var(--color);
+  padding: 1rem 0 0;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+.calendar__year {
+  font-weight: 300;
+}
+.calendar__month {
+  font-weight: 700;
+}
+.calendar__table {
+  flex: 1;
+  width: 100%;
+  display: grid;
+  /*grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));*/
+  grid-template-columns: repeat(7, minmax(80px, 1fr));
+  grid-template-rows: 4vh;
+  background-color: var(--primary-color);
+  grid-gap: 1px;
+}
+.calendar__day, .calendar__number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.calendar__number {
+  padding: 0.6rem;
+  background-color: #fff;
+  /*margin-left: .2rem;
+  margin-bottom: .2rem;*/
+  cursor: pointer;
+  /*&:nth-child(7n) {
+    margin-right: .2rem;
+  }*/
+}
+.calendar__number:nth-child(7n+1) {
+  font-weight: 600;
+}
+.calendar__number--off {
+  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(.35) rotate(45)'><rect x='0' y='0' width='100%' height='100%' fill='rgba(248,248,248,1)'/><path d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z'  stroke-width='8' stroke='rgba(255,255,255,1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-45,-45)' fill='url(%23a)'/></svg>");
+}
+.calendar__number--selected {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.calendar__number--active {
+  background-color: #dbdbdb;
+  font-weight: 700;
+  cursor: pointer;
+}
+.calendar__number--active .calendar__day-number {
+  font-size: 1.7rem;
+  margin: -0.25rem;
+}
+.calendar__number:hover .calendar__day-number {
+  transform: translateY(-0.5rem);
+  font-size: calc(.25vh + 2rem);
+}
+.calendar__day {
+  font-size: 0.8em;
+  color: var(--color);
+  background-color: var(--primary-color);
+  font-weight: 300;
+}
+.calendar__day:first-child {
+  font-weight: 600;
+}
+.calendar__day-number {
+  align-self: flex-start;
+  font-size: calc(.25vh + 1rem);
+  text-align: left;
+  width: 100%;
+  transition: all 0.35s ease;
+}
+.calendar .calendar__button {
+  display: flex;
+  height: 10vh;
+  align-items: center;
+}
+
 .current-day {
   cursor: default;
   text-align: center;
   background-color: var(--primary-color);
   color: var(--color);
-  width: 34%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 .current-day__title {
   color: var(--off-color);
-  font-size: calc(1vh + 2.5rem);
+  font-size: calc(1vh + 2rem);
   padding: 10vh 0 2vh;
   border-bottom: 1px solid var(--off-color);
   margin-bottom: 3vh;
@@ -42,16 +172,25 @@
   margin: 0 auto;
   background-color: transparent;
   display: block;
-  padding: 1vh 5vh;
+  padding: 1vh 3vh;
   color: var(--color);
   border: 3px solid var(--color);
-  font-size: calc(1vh + 1rem);
+  font-size: calc(1vh + .6rem);
   cursor: pointer;
 }
 .btn:hover {
   background-color: white;
   opacity: 0.4;
   color: black;
+}
+.btn--primary {
+  color: var(--primary-color);
+  border: 3px solid var(--primary-color);
+}
+.btn--primary:hover {
+  color: var(--color);
+  background-color: var(--primary-color);
+  opacity: 1;
 }
 
 html {
@@ -71,6 +210,6 @@ body {
 }
 @media (orientation: landscape) {
   body {
-    background-color: red;
+    background-color: #bafaff;
   }
 }/*# sourceMappingURL=main.css.map */

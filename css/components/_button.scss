@@ -4,14 +4,26 @@
   margin: 0 auto;
   background-color: transparent;
   display: block;
-  padding: 1vh 5vh;
+  padding: 1vh 3vh;
   color: var(--color);
   border: 3px solid var(--color);
-  font-size: calc(1vh + 1rem);
+  font-size: calc(1vh + .6rem);
   cursor: pointer;
+
   &:hover {
     background-color: white;
     opacity: 0.4;
     color: black;
   }
+
+  &--primary {
+    color: var(--primary-color);
+    border: 3px solid var(--primary-color);
+    &:hover {
+      color: var(--color);
+      background-color: var(--primary-color);
+      opacity: 1;
+    }
+  }
+
 }
