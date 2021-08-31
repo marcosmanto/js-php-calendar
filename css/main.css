@@ -80,17 +80,48 @@
   align-items: center;
 }
 .calendar__number {
+  position: relative;
   padding: 0.6rem;
   background-color: #fff;
   /*margin-left: .2rem;
   margin-bottom: .2rem;*/
+  font-size: calc(.25vh + 1rem);
   cursor: pointer;
-  /*&:nth-child(7n) {
+  /*
+  &:nth-child(7n) {
     margin-right: .2rem;
   }*/
 }
-.calendar__number:nth-child(7n+1) {
-  font-weight: 600;
+.calendar__number--has-tooltip:hover {
+  cursor: help;
+}
+.calendar__number--has-tooltip:hover span {
+  display: block;
+}
+.calendar__number--has-tooltip span {
+  display: none;
+  white-space: pre-wrap;
+  position: absolute;
+  min-width: 150px;
+  max-width: 200px;
+  text-align: center;
+  padding: 6px;
+  background-color: #ededed;
+  border-radius: 6px;
+  font-size: 0.9em;
+  right: 5px;
+  z-index: 100;
+}
+.calendar__number img {
+  position: absolute;
+  height: 65%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100px;
+}
+.calendar__number:nth-child(7n+1).calendar__number--has-tooltip span {
+  left: 5px;
 }
 .calendar__number--off {
   background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(.35) rotate(45)'><rect x='0' y='0' width='100%' height='100%' fill='rgba(248,248,248,1)'/><path d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z'  stroke-width='8' stroke='rgba(255,255,255,1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-45,-45)' fill='url(%23a)'/></svg>");
@@ -109,8 +140,7 @@
   margin: -0.25rem;
 }
 .calendar__number:hover .calendar__day-number {
-  transform: translateY(-0.5rem);
-  font-size: calc(.25vh + 2rem);
+  font-size: 1.35em;
 }
 .calendar__day {
   font-size: 0.8em;
@@ -123,7 +153,7 @@
 }
 .calendar__day-number {
   align-self: flex-start;
-  font-size: calc(.25vh + 1rem);
+  font-size: 1em;
   text-align: left;
   width: 100%;
   transition: all 0.35s ease;

@@ -85,17 +85,57 @@
   }
 
   &__number {
+    position: relative;
     padding: .6rem;
     background-color: #fff;
     /*margin-left: .2rem;
     margin-bottom: .2rem;*/
+    font-size: calc(.25vh + 1rem);
     cursor: pointer;
 
-    &:nth-child(7n + 1) {
-      font-weight: 600;
+    &--has-tooltip {
+      &:hover {
+        cursor: help;
+        span {
+          display: block;
+
+        }
+      }
+      span {
+        display: none;
+        white-space: pre-wrap;
+        position: absolute;
+        min-width: 150px;
+        max-width: 200px;
+        text-align: center;
+        padding: 6px;
+        background-color: #ededed;
+        border-radius: 6px;
+        font-size: 0.9em;
+        right: 5px;
+        z-index: 100;
+      }
     }
 
-    /*&:nth-child(7n) {
+    img {
+      position: absolute;
+      height: 65%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      max-height: 100px;
+    }
+
+    &:nth-child(7n + 1) {
+      &.calendar__number--has-tooltip {
+        span {
+          left: 5px;
+        }
+      }
+    }
+
+    /*
+    &:nth-child(7n) {
       margin-right: .2rem;
     }*/
 
@@ -118,8 +158,8 @@
       }
     }
     &:hover .calendar__day-number {
-      transform: translateY(-.5rem);
-      font-size: calc(.25vh + 2rem);
+      //transform: translateY(-.5em);
+      font-size: 1.35em;
     }
   }
 
@@ -135,7 +175,7 @@
 
   &__day-number {
     align-self: flex-start;
-    font-size: calc(.25vh + 1rem);
+    font-size: 1em;
     text-align: left;
     width: 100%;
     transition: all .35s ease;
