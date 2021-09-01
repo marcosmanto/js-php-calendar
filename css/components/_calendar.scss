@@ -7,19 +7,22 @@
   align-items: center;
   font-size: calc(1vh + 1rem);
   cursor: default;
+  overflow: hidden;
 
   &__wrapper {
     scroll-behavior: smooth;
     overflow-y: hidden;
-    width: 90%;
-    min-width: 365px;
+    width: 95%;
+    /*min-width: 365px;*/
     display: flex;
     flex-direction: column;
-    height: 82vh;
-    max-height: 82vh;
+    height: 90vh;
     padding: 1px;
     background-color: var(--primary-color);
-    box-shadow: 3px 2px 15px rgb(0 0 0 / 15%)
+    box-shadow: 3px 2px 15px rgb(0 0 0 / 15%);
+    @media (orientation: portrait) {
+      height: 70vh;
+    }
   }
 
   &__title {
@@ -29,6 +32,9 @@
     height: 8vh;
     display: flex;
     align-items: center;
+    @media (orientation: landscape) {
+      display: none;
+    }
   }
 
   &__navigation {
@@ -71,7 +77,7 @@
     width: 100%;
     display: grid;
     /*grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));*/
-    grid-template-columns: repeat(7, minmax(80px, 1fr));
+    grid-template-columns: repeat(7, minmax(45px, 1fr));
     grid-template-rows: 4vh;
     background-color: var(--primary-color);
     grid-gap: 1px;
@@ -185,6 +191,9 @@
     display: flex;
     height: 10vh;
     align-items: center;
+    @media (orientation: landscape) {
+      display: none;
+    }
   }
 
 }

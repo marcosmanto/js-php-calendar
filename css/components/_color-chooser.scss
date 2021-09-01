@@ -12,11 +12,13 @@
     display: grid;
     width: 100%;
     grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, minmax(55px,1fr));
     justify-content: center;
     column-gap: 2vh;
     row-gap: 3vh;
     @media (orientation: portrait) {
       grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, minmax(55px,1fr));
     }
   }
 
@@ -25,6 +27,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     &--blue .color-chooser__color-preview{
       background-color: #1B19CD;
     }
@@ -70,13 +73,19 @@
   }
 
   &__color-preview {
-    width: 5.5vw;
-    height: 5.5vw;
+    width: 5vw;
+    height: 5vw;
     border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
+    @media (orientation: portrait) {
+      width: 10vw;
+      height: 10vw;
+    }
+
     &:hover {
       opacity: .8;
       i { transform: translateY(.15rem);}
