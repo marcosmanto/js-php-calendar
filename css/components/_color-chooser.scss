@@ -1,0 +1,91 @@
+.color-chooser {
+  font-size: calc(2.2rem + 1.6vw);
+  h3 {
+    margin: 0 0 2rem;
+    font-size: 1em;
+    font-weight: 300;
+    border-bottom: 1px solid #222;
+    padding: 0 2rem 2vw;
+    text-align: center;
+  }
+  &__color-options {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(6, 1fr);
+    justify-content: center;
+    column-gap: 2vh;
+    row-gap: 3vh;
+    @media (orientation: portrait) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__color-option {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &--blue .color-chooser__color-preview{
+      background-color: #1B19CD;
+    }
+    &--red .color-chooser__color-preview{
+      background-color: #D01212;
+    }
+    &--purple .color-chooser__color-preview{
+      background-color: #721D89;
+    }
+    &--green .color-chooser__color-preview{
+      background-color: #158348;;
+    }
+    &--orange .color-chooser__color-preview{
+      background-color: #EE742D;
+    }
+    &--deep-orange .color-chooser__color-preview{
+      background-color: #F13C26;
+    }
+    &--baby-blue .color-chooser__color-preview{
+      background-color: #31B2FC;
+    }
+    &--cerise .color-chooser__color-preview{
+      background-color: #EA3D69;
+    }
+    &--lime .color-chooser__color-preview{
+      background-color: #36C945;
+    }
+    &--teal .color-chooser__color-preview{
+      background-color: #2FCCB9;
+    }
+    &--pink .color-chooser__color-preview{
+      background-color: #F50D7A;
+    }
+    &--black .color-chooser__color-preview{
+      background-color: #212524;
+    }
+    h4 {
+      font-size: .4em;
+      font-weight: 600;
+      height: 2vh;
+    }
+
+  }
+
+  &__color-preview {
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      opacity: .8;
+      i { transform: translateY(.15rem);}
+    }
+    i {
+      color: var(--color);
+      font-size: .5em;
+      transition: transform .2s ease-out;
+    }
+  }
+
+}

@@ -4,7 +4,7 @@
   margin: 0 auto;
   background-color: transparent;
   display: block;
-  padding: 1vh 3vh;
+  padding: .8vh 2.5vh;
   color: var(--color);
   border: 3px solid var(--color);
   font-size: calc(1vh + .6rem);
@@ -22,6 +22,16 @@
     &:hover {
       color: var(--color);
       background-color: var(--primary-color);
+      opacity: 1;
+    }
+  }
+
+  &--black {
+    color: var(--black);
+    border: 3px solid var(--black);
+    &:hover {
+      color: var(--color);
+      background-color: var(--black);
       opacity: 1;
     }
   }

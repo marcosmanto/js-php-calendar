@@ -2,11 +2,14 @@
   --color: #fefdfd;
   --off-color: rgba(255,255,255, .6);
   --primary-color: #1819cd;
+  --black: #212524;
 }
 
 @import './components/calendar';
 @import './components/current-day';
 @import './components/button';
+@import './components/dialog';
+@import './components/color-chooser';
 
 html {
   font-size: 62.5%;
@@ -17,6 +20,7 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border: none;
 }
 
 body {

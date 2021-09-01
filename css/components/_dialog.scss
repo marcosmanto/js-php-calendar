@@ -1,0 +1,22 @@
+.dialog {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(29, 29, 29, 0.75);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #fefdfd;
+    padding: 4vw 6vw;
+    border-radius: 10px;
+  }
+  .btn {
+    margin: 5vw 0 1vw;
+  }
+}
