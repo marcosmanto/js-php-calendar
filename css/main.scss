@@ -29,7 +29,7 @@ body {
   background-color: #FEFDFD;
   display: flex;
   @media (orientation: portrait) {
-    background-color: rgb(186, 250, 255);
+    /*background-color: rgb(186, 250, 255);*/
     flex-direction: column;
   }
 }

@@ -477,7 +477,7 @@ body {
 }
 @media (orientation: portrait) {
   body {
-    background-color: #bafaff;
+    /*background-color: rgb(186, 250, 255);*/
     flex-direction: column;
   }
 }/*# sourceMappingURL=main.css.map */
