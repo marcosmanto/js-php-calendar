@@ -3,6 +3,7 @@
   --off-color: rgba(255,255,255, .6);
   --primary-color: #1819cd;
   --black: #212524;
+  --danger: #d71c1f;
 }
 
 .calendar {
@@ -232,6 +233,15 @@
   background-color: var(--black);
   opacity: 1;
 }
+.btn--danger {
+  color: var(--danger);
+  border: 3px solid var(--danger);
+}
+.btn--danger:hover {
+  color: var(--color);
+  background-color: var(--danger);
+  opacity: 1;
+}
 
 .dialog {
   width: 100vw;
@@ -241,6 +251,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.dialog:not([open]) {
+  display: none;
 }
 .dialog__popup {
   display: flex;
@@ -253,7 +266,7 @@
   border-radius: 10px;
 }
 .dialog .btn {
-  margin: 5vw 0 1vw;
+  margin: 5vw auto 1vw;
 }
 
 .color-chooser {
@@ -347,6 +360,33 @@
   color: var(--color);
   font-size: 0.5em;
   transition: transform 0.2s ease-out;
+}
+
+.note-editor {
+  font-size: calc(2.2rem + 1.6vw);
+}
+.note-editor h3 {
+  margin: 0 0 2rem;
+  font-size: 1em;
+  font-weight: 300;
+  /*border-bottom: 1px solid #222;*/
+  padding: 0 2rem 2vw;
+  text-align: center;
+}
+.note-editor__textarea {
+  font-weight: 600;
+  color: var(--black);
+  font-size: 0.7em;
+  width: 100%;
+  height: 25vh;
+  border: 1px solid #a7a6a6;
+  padding: 2rem;
+  border-radius: 10px;
+  outline: none;
+  resize: none;
+}
+.note-editor__buttons {
+  display: flex;
 }
 
 html {

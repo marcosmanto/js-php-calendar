@@ -3,6 +3,7 @@
   --off-color: rgba(255,255,255, .6);
   --primary-color: #1819cd;
   --black: #212524;
+  --danger: #d71c1f;
 }
 
 @import './components/calendar';
@@ -10,6 +11,7 @@
 @import './components/button';
 @import './components/dialog';
 @import './components/color-chooser';
+@import './components/note-editor';
 
 html {
   font-size: 62.5%;

@@ -6,6 +6,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:not([open]) {
+    display: none;
+  }
   &__popup {
     display: flex;
     flex-direction: column;
@@ -17,6 +21,6 @@
     border-radius: 10px;
   }
   .btn {
-    margin: 5vw 0 1vw;
+    margin: 5vw auto 1vw;
   }
 }
