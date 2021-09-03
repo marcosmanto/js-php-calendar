@@ -7,7 +7,8 @@ module.exports = {
     filename: "app.js",
     path: path.resolve(__dirname, "js")
   },
-  mode: "production",
+  devtool: 'source-map',
+  mode: "development",
   plugins: [
     new CleanWebpackPlugin()
   ],

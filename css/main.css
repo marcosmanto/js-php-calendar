@@ -54,6 +54,7 @@
 }
 .calendar__month {
   padding: 0 3rem;
+  min-width: 25vw;
 }
 .calendar__prev-month, .calendar__next-month {
   font-size: 1em;
@@ -136,11 +137,12 @@
   left: 5px;
 }
 .calendar__number--off {
+  pointer-events: none;
   background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(.35) rotate(45)'><rect x='0' y='0' width='100%' height='100%' fill='rgba(248,248,248,1)'/><path d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z'  stroke-width='8' stroke='rgba(255,255,255,1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-45,-45)' fill='url(%23a)'/></svg>");
 }
 .calendar__number--selected {
-  grid-column: span 2;
-  grid-row: span 2;
+  grid-column: span 2/auto;
+  grid-row: span 2/auto;
 }
 .calendar__number--active {
   background-color: #dbdbdb;
@@ -169,6 +171,7 @@
   text-align: left;
   width: 100%;
   transition: all 0.35s ease;
+  pointer-events: none;
 }
 .calendar .calendar__button {
   display: flex;
@@ -191,6 +194,9 @@
   flex-direction: column;
   height: 100vh;
   font-size: calc(1vh + 1.5rem);
+}
+.current-day sup {
+  font-size: 0.5em;
 }
 @media (orientation: portrait) {
   .current-day {
@@ -240,7 +246,7 @@
 @media (orientation: portrait) {
   .current-day__subtitle {
     font-size: 1em;
-    padding: 0;
+    padding: 0 0 2.5rem 0;
     flex-basis: 100%;
     height: 20px;
   }
@@ -304,6 +310,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /*&__popup--open {
+    transform: scale(1);
+    opacity: 1;
+  }*/
 }
 .dialog:not([open]) {
   display: none;
@@ -317,9 +327,119 @@
   background-color: #fefdfd;
   padding: 3vw 4vw;
   border-radius: 10px;
+  opacity: 0;
+  /*transform: scale(.5);
+   transition: all .35s ease-out;
+  opacity: 0;*/
+}
+.dialog__popup--open {
+  -webkit-animation-name: popup-fadein;
+          animation-name: popup-fadein;
+  -webkit-animation-duration: 0.35s;
+          animation-duration: 0.35s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.dialog__popup--close {
+  -webkit-animation-name: popup-fadeout;
+          animation-name: popup-fadeout;
+  -webkit-animation-duration: 0.35s;
+          animation-duration: 0.35s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
+@-webkit-keyframes popup-fadeout {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+@keyframes popup-fadeout {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+@-webkit-keyframes popup-fadein {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes popup-fadein {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .dialog .btn {
   margin: 5vw auto 1vw;
+}
+.dialog--fade-in {
+  -webkit-animation-name: fade-in;
+          animation-name: fade-in;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
+.dialog--fade-out {
+  -webkit-animation-name: fade-out;
+          animation-name: fade-out;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .color-chooser {

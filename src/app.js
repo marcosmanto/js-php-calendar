@@ -1,15 +1,9 @@
-class Calendar {
+import Calendar from "./modules/calendar"
+const Modal = require('./modules/modal')
 
-  contructor(height, width) {
-    this.height = height;
-    this.width = width;
-    this.render()
-  }
+new Calendar()
+  //.calendarDate = new Date(2023, 6, 1)
 
-  render() {
-    return this
-  }
+const modalObj = new Modal()
 
-}
-
-new Calendar(5, 5)
+modalObj.openModal(Modal.MODAL_TYPE.COLOR)
