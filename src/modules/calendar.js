@@ -163,6 +163,10 @@ export default class Calendar {
     return n
   }
 
+  get calendarDaysNodeList() {
+    return Array.from(document.querySelectorAll('.calendar__number:not(.calendar__number--off)'))
+  }
+
   renderCalendar() {
     // Set calendar date as first day o month
     //this.#data.calendar_date = new Date(2021, 9, 1)
@@ -218,13 +222,16 @@ export default class Calendar {
   renderCalendarMonthDays(numberOfDays) {
     let days = ''
     for (let i = 1; i <= numberOfDays; i++) {
+      let dataUID = new Date(
+        this.#data.calendar_date.getFullYear(),
+        this.#data.calendar_date.getMonth(), i).toLocaleDateString()
       if (
         i === new Date().getDate() &&
         this.#data.calendar_date.getMonth() === new Date().getMonth()
       ) {
-        days += `<div class="calendar__number calendar__number--active"><div class="calendar__day-number">${i}</div></div>`
+        days += `<div data-uid="${dataUID}" class="calendar__number calendar__number--active"><div class="calendar__day-number">${i}</div></div>`
       } else {
-        days += `<div class="calendar__number"><div class="calendar__day-number">${i}</div></div>`
+        days += `<div data-uid="${dataUID}" class="calendar__number"><div class="calendar__day-number">${i}</div></div>`
       }
     }
     this.#selCalendarGrid.insertAdjacentHTML('beforeend',days)

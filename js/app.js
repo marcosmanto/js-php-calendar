@@ -265,6 +265,11 @@ var Calendar = /*#__PURE__*/function () {
       return n;
     }
   }, {
+    key: "calendarDaysNodeList",
+    get: function get() {
+      return Array.from(document.querySelectorAll('.calendar__number:not(.calendar__number--off)'));
+    }
+  }, {
     key: "renderCalendar",
     value: function renderCalendar() {
       // Set calendar date as first day o month
@@ -309,10 +314,12 @@ var Calendar = /*#__PURE__*/function () {
       var days = '';
 
       for (var i = 1; i <= numberOfDays; i++) {
+        var dataUID = new Date(_classPrivateFieldGet(this, _data).calendar_date.getFullYear(), _classPrivateFieldGet(this, _data).calendar_date.getMonth(), i).toLocaleDateString();
+
         if (i === new Date().getDate() && _classPrivateFieldGet(this, _data).calendar_date.getMonth() === new Date().getMonth()) {
-          days += "<div class=\"calendar__number calendar__number--active\"><div class=\"calendar__day-number\">".concat(i, "</div></div>");
+          days += "<div data-uid=\"".concat(dataUID, "\" class=\"calendar__number calendar__number--active\"><div class=\"calendar__day-number\">").concat(i, "</div></div>");
         } else {
-          days += "<div class=\"calendar__number\"><div class=\"calendar__day-number\">".concat(i, "</div></div>");
+          days += "<div data-uid=\"".concat(dataUID, "\" class=\"calendar__number\"><div class=\"calendar__day-number\">").concat(i, "</div></div>");
         }
       }
 
@@ -745,6 +752,109 @@ _defineProperty(Modal, "MODAL_TYPE", {
 
 module.exports = Modal;
 
+/***/ }),
+
+/***/ "./src/modules/note-editor.js":
+/*!************************************!*\
+  !*** ./src/modules/note-editor.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ NoteEditor)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
+var _calendarObject = /*#__PURE__*/new WeakMap();
+
+var _dialogObject = /*#__PURE__*/new WeakMap();
+
+var _selButtonPost = /*#__PURE__*/new WeakMap();
+
+var _selButtonDelete = /*#__PURE__*/new WeakMap();
+
+var NoteEditor = /*#__PURE__*/function () {
+  function NoteEditor(dialogObj, calendarObj) {
+    _classCallCheck(this, NoteEditor);
+
+    _calendarObject.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _dialogObject.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _selButtonPost.set(this, {
+      writable: true,
+      value: document.querySelector('.note-editor .btn--black')
+    });
+
+    _selButtonDelete.set(this, {
+      writable: true,
+      value: document.querySelector('.note-editor .btn--danger')
+    });
+
+    if (dialogObj) _classPrivateFieldSet(this, _dialogObject, dialogObj);
+    if (calendarObj) _classPrivateFieldSet(this, _calendarObject, calendarObj);
+    this.events();
+  }
+
+  _createClass(NoteEditor, [{
+    key: "events",
+    value: function events() {
+      var _this = this;
+
+      _classPrivateFieldGet(this, _calendarObject).calendarDaysNodeList.forEach(function (el) {
+        return el.addEventListener('click', _this.onDayClick.bind(_this));
+      });
+
+      _classPrivateFieldGet(this, _selButtonPost).addEventListener('click', this.onPostClick.bind(this));
+
+      _classPrivateFieldGet(this, _selButtonDelete).addEventListener('click', this.onDeleteClick.bind(this));
+    }
+  }, {
+    key: "onDayClick",
+    value: function onDayClick(evt) {
+      console.log(evt.target.dataset.uid);
+
+      _classPrivateFieldGet(this, _dialogObject).openModal();
+    }
+  }, {
+    key: "onPostClick",
+    value: function onPostClick() {
+      _classPrivateFieldGet(this, _dialogObject).closeModal();
+    }
+  }, {
+    key: "onDeleteClick",
+    value: function onDeleteClick() {
+      _classPrivateFieldGet(this, _dialogObject).closeModal();
+    }
+  }]);
+
+  return NoteEditor;
+}();
+
+
+
 /***/ })
 
 /******/ 	});
@@ -813,23 +923,40 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_calendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/calendar */ "./src/modules/calendar.js");
 /* harmony import */ var _modules_color_chooser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/color-chooser */ "./src/modules/color-chooser.js");
+/* harmony import */ var _modules_note_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/note-editor */ "./src/modules/note-editor.js");
+
 
 
 
 var Modal = __webpack_require__(/*! ./modules/modal */ "./src/modules/modal.js");
+/**
+ * Start a new Calendar object
+ */
+
 
 var calendar = new _modules_calendar__WEBPACK_IMPORTED_MODULE_0__.default(); //.calendarDate = new Date(2023, 6, 1)
 
+/**
+ * Create variants of modal popup
+ */
+
 var modalChooseColor = new Modal(Modal.MODAL_TYPE.COLOR, calendar); //modalChooseColor.openModal()
 
-var modalEditor = new Modal(Modal.MODAL_TYPE.EDITOR); //modalEditor.openModal()
+var modalEditor = new Modal(Modal.MODAL_TYPE.EDITOR, calendar); //modalEditor.openModal()
 //console.log(modalEditor.modalType)
 
+/**
+ * Start functionalities by instanciating modules
+ */
+
+var noteEditor = new _modules_note_editor__WEBPACK_IMPORTED_MODULE_2__.default(modalEditor, calendar);
 var colorChooser = new _modules_color_chooser__WEBPACK_IMPORTED_MODULE_1__.default(modalChooseColor);
 /*colorChooser.dialog.openModal()
 console.log(colorChooser.dialog.modalType)*/
 
-/* change theme buttons */
+/**
+ * start ColorChooser by clicking change theme buttons
+ */
 
 Array.from(document.querySelectorAll('.current-day__btn, .calendar__button .btn')).forEach(function (el) {
   return el.addEventListener('click', function () {
