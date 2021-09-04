@@ -3,22 +3,33 @@ class Modal {
     'COLOR': document.querySelector('.color-chooser'),
     'EDITOR': document.querySelector('.note-editor')
   }
-  #currentModal = Modal.MODAL_TYPE.COLOR
+  #currentModal = 'xxuuuu' // = Modal.MODAL_TYPE.COLOR
   #selModal = document.querySelector('.dialog')
   #selPopUp = document.querySelector('.dialog__popup')
   #selDialogButtons = document.querySelectorAll('.dialog button')
   #cssClassFadeIn = 'dialog--fade-in'
   #cssClassFadeOut = 'dialog--fade-out'
+  #calendar
 
 
-  constructor() {
-    this.events()
+  constructor(modalType, calendarObj) {
+    this.#currentModal = modalType
+    if(calendarObj) this.#calendar = calendarObj
+    //this.events()
   }
 
   events() {
+    this.#selDialogButtons.forEach(el => el.addEventListener('click', this.closeModal.bind(this)))
+  }
+
+  attachAnimationEvents() {
     this.#selModal.addEventListener('animationend', this.toggleModal.bind(this))
     this.#selPopUp.addEventListener('animationend', this.dialogFadeOutAndClose.bind(this))
-    this.#selDialogButtons.forEach(el => el.addEventListener('click', this.closeModal.bind(this)))
+  }
+
+  dettachAnimationEvents() {
+    this.#selModal.removeEventListener('animationend', this.toggleModal.bind(this))
+    this.#selPopUp.removeEventListener('animationend', this.dialogFadeOutAndClose.bind(this))
   }
 
   /**
@@ -33,6 +44,15 @@ class Modal {
     // listen only for close animation end not '--open' animation
     if(this.#selPopUp.classList.contains('dialog__popup--close')) {
       this.#selModal.classList.add(this.#cssClassFadeOut)
+    }
+  }
+
+  get modalType() {
+    switch(this.#currentModal){
+      case Modal.MODAL_TYPE.COLOR:
+        return 'COLOR CHOOSE MODAL'
+      case Modal.MODAL_TYPE.EDITOR:
+        return 'EDITOR MODAL'
     }
   }
 
@@ -63,9 +83,8 @@ class Modal {
 
   }
 
-  openModal(type) {
+  openModal(type = this.#currentModal) {
     this.#selModal.open = true
-    this.#selModal.classList.add(this.#cssClassFadeIn)
     switch(type){
       case Modal.MODAL_TYPE.COLOR:
         this.#currentModal = Modal.MODAL_TYPE.COLOR
@@ -74,10 +93,18 @@ class Modal {
         this.#currentModal = Modal.MODAL_TYPE.EDITOR
         break
     }
+    this.#selModal.classList.add(this.#cssClassFadeIn)
+    // Attach animation events here to avoid objects
+    // which openModal was not called to appear. If handler is placed in constructor,
+    // even objects that were not ordered to open will open
+    this.attachAnimationEvents()
+    if(this.#calendar) this.#calendar.enableKeyboardNavigation = false
   }
 
   closeModal() {
     this.#selPopUp.classList.add('dialog__popup--close')
+    this.dettachAnimationEvents()
+    if(this.#calendar) this.#calendar.enableKeyboardNavigation = true
   }
 
 }

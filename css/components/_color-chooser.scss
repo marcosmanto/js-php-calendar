@@ -28,6 +28,11 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    > * {
+      pointer-events: none;
+    }
+
     &--blue .color-chooser__color-preview{
       background-color: #1B19CD;
     }
@@ -80,6 +85,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    pointer-events: all;
+
+    > * {
+      pointer-events: none;
+    }
 
     @media (orientation: portrait) {
       width: 10vw;
@@ -94,6 +104,13 @@
       color: var(--color);
       font-size: .5em;
       transition: transform .2s ease-out;
+      display: none;
+    }
+  }
+
+  &__color-option--selected {
+    i {
+      display: inline-block;
     }
   }
 

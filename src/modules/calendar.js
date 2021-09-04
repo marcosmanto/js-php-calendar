@@ -10,6 +10,7 @@ export default class Calendar {
   #selButtonNextMonth = document.querySelector('.calendar__next-month')
   #selCalendarCell
   #selLastCellClicked
+  enableKeyboardNavigation = true
 
   #data = {
     current_day: {},
@@ -64,6 +65,16 @@ export default class Calendar {
   events() {
     this.#selButtonPrevMonth.addEventListener('click', this.previousMonth.bind(this))
     this.#selButtonNextMonth.addEventListener('click', this.nextMonth.bind(this))
+    document.addEventListener('keydown', this.keyboardNavigation.bind(this))
+  }
+
+  keyboardNavigation(evt) {
+    if(this.enableKeyboardNavigation) {
+      switch(evt.keyCode) {
+        case 37: this.previousMonth(); break
+        case 39: this.nextMonth(); break
+      }
+    }
   }
 
   calendarCellEvents() {

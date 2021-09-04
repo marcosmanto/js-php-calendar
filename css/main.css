@@ -476,6 +476,9 @@
   align-items: center;
   text-align: center;
 }
+.color-chooser__color-option > * {
+  pointer-events: none;
+}
 .color-chooser__color-option--blue .color-chooser__color-preview {
   background-color: #1B19CD;
 }
@@ -525,6 +528,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  pointer-events: all;
+}
+.color-chooser__color-preview > * {
+  pointer-events: none;
 }
 @media (orientation: portrait) {
   .color-chooser__color-preview {
@@ -542,6 +549,10 @@
   color: var(--color);
   font-size: 0.5em;
   transition: transform 0.2s ease-out;
+  display: none;
+}
+.color-chooser__color-option--selected i {
+  display: inline-block;
 }
 
 .note-editor {
