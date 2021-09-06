@@ -1,14 +1,14 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const devMode = process.env.NODE_ENV !== 'production'
 
-module.exports = {
-  entry: "./src/app.js",
+const config = {
+  entry: './src/app.js',
   output: {
-    filename: "app.js",
-    path: path.resolve(__dirname, "js")
+    filename: 'app.js',
+    path: path.resolve(__dirname, 'js')
   },
-  devtool: 'source-map',
-  mode: "development",
+  mode: devMode? 'development' : 'production',
   plugins: [
     new CleanWebpackPlugin()
   ],
@@ -27,3 +27,9 @@ module.exports = {
     ]
   }
 }
+
+if(devMode) {
+  config.devtool =  'source-map'
+}
+
+module.exports = config

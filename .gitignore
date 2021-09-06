@@ -1,3 +1,4 @@
 node_modules
 *-ref.html
 *.css.map
+js/app.js.map
