@@ -23,10 +23,17 @@ export default class ColorChooser {
   #previousColorSelection
 
   constructor(dialogObj) {
-    const colors = Array.from(this.#themeColors.keys())
-    this.#currentThemeColor = colors[Math.floor(Math.random() * colors.length)]
+    //const colors = Array.from(this.#themeColors.keys())
+    this.#currentThemeColor = 'blue' //colors[Math.floor(Math.random() * colors.length)]
     this.#dialogObject = dialogObj
-    this.#selColorOptions.forEach(el => el.parentElement.classList.remove('color-chooser__color-option--selected'))
+    this.#previousColorSelection = document.querySelector(`.color-chooser [data-selected-color="${this.#currentThemeColor}"]`).parentElement
+    this.#selColorOptions.forEach(el => {
+      el.parentElement.classList.remove('color-chooser__color-option--selected')
+      if(el.dataset.selectedColor === this.#currentThemeColor){
+        el.parentElement.classList.add('color-chooser__color-option--selected')
+      }
+    })
+
     this.events()
   }
 

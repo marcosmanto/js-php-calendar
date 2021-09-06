@@ -101,13 +101,22 @@
     cursor: pointer;
 
     &--has-tooltip {
-      &:hover {
-        cursor: help;
-        span {
-          display: block;
+
+      > * {
+        pointer-events: none;
+      }
+
+      @media (orientation: landscape) {
+        &:hover {
+          cursor: help;
+
+          span {
+            display: block;
+          }
 
         }
       }
+
       span {
         display: none;
         white-space: pre-wrap;

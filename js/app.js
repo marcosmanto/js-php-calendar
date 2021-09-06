@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Calendar)
 /* harmony export */ });
+/* harmony import */ var _note_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note-editor */ "./src/modules/note-editor.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -29,6 +30,8 @@ function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classEx
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+
 
 var _selCurDay_Day = /*#__PURE__*/new WeakMap();
 
@@ -187,6 +190,7 @@ var Calendar = /*#__PURE__*/function () {
       if (newDate) {
         _classPrivateFieldGet(this, _data).calendar_date = newDate;
         this.renderCalendar();
+        document.body.dispatchEvent(new Event('monthchange'));
       }
     }
   }, {
@@ -207,7 +211,7 @@ var Calendar = /*#__PURE__*/function () {
       }
 
       this.lastCellClicked = evt.target;
-      evt.target.classList.toggle('calendar__number--selected');
+      evt.target.classList.add('calendar__number--selected');
     }
   }, {
     key: "previousMonth",
@@ -272,8 +276,9 @@ var Calendar = /*#__PURE__*/function () {
   }, {
     key: "renderCalendar",
     value: function renderCalendar() {
-      // Set calendar date as first day o month
+      console.log(_note_editor__WEBPACK_IMPORTED_MODULE_0__.default.NOTES); // Set calendar date as first day o month
       //this.#data.calendar_date = new Date(2021, 9, 1)
+
       _classPrivateFieldGet(this, _data).calendar_date.setDate(1);
 
       var firstDayOfMonthWeekIndex = _classPrivateFieldGet(this, _data).calendar_date.getDay();
@@ -293,9 +298,19 @@ var Calendar = /*#__PURE__*/function () {
       });
       this.renderCalendarPreviousMonthDays(firstDayOfMonthWeekIndex, previousMonthLastDay);
       this.renderCalendarMonthDays(lastDayOfMonth);
-      this.renderNextMonthDays(nextMonthDaysToShow); //this.#selCalendarCell = Array.from[document.querySelectorAll('.calendar__number')]
-
+      this.renderNextMonthDays(nextMonthDaysToShow);
+      this.attachNotes();
       this.calendarCellEvents();
+    }
+  }, {
+    key: "attachNotes",
+    value: function attachNotes() {
+      this.calendarDaysNodeList.forEach(function (el) {
+        if (_note_editor__WEBPACK_IMPORTED_MODULE_0__.default.NOTES.has(el.dataset.uid)) {
+          el.classList.add('calendar__number--has-tooltip');
+          el.insertAdjacentHTML('beforeend', "\n          <img src=\"images/note".concat(_note_editor__WEBPACK_IMPORTED_MODULE_0__.default.NOTES.get(el.dataset.uid).color, ".png\" alt=\"Note\">\n          <span>").concat(_note_editor__WEBPACK_IMPORTED_MODULE_0__.default.NOTES.get(el.dataset.uid).content, "</span>\n          ").trim());
+        }
+      });
     }
   }, {
     key: "renderNextMonthDays",
@@ -379,15 +394,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
-
-function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
-
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 
-function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 var _selButtonUpdate = /*#__PURE__*/new WeakMap();
 
@@ -404,6 +419,8 @@ var _previousColorSelection = /*#__PURE__*/new WeakMap();
 //import Modal from "./modal"
 var ColorChooser = /*#__PURE__*/function () {
   function ColorChooser(dialogObj) {
+    var _this = this;
+
     _classCallCheck(this, ColorChooser);
 
     _selButtonUpdate.set(this, {
@@ -472,14 +489,20 @@ var ColorChooser = /*#__PURE__*/function () {
       value: void 0
     });
 
-    var colors = Array.from(_classPrivateFieldGet(this, _themeColors).keys());
+    //const colors = Array.from(this.#themeColors.keys())
+    _classPrivateFieldSet(this, _currentThemeColor, 'blue'); //colors[Math.floor(Math.random() * colors.length)]
 
-    _classPrivateFieldSet(this, _currentThemeColor, colors[Math.floor(Math.random() * colors.length)]);
 
     _classPrivateFieldSet(this, _dialogObject, dialogObj);
 
+    _classPrivateFieldSet(this, _previousColorSelection, document.querySelector(".color-chooser [data-selected-color=\"".concat(_classPrivateFieldGet(this, _currentThemeColor), "\"]")).parentElement);
+
     _classPrivateFieldGet(this, _selColorOptions).forEach(function (el) {
-      return el.parentElement.classList.remove('color-chooser__color-option--selected');
+      el.parentElement.classList.remove('color-chooser__color-option--selected');
+
+      if (el.dataset.selectedColor === _classPrivateFieldGet(_this, _currentThemeColor)) {
+        el.parentElement.classList.add('color-chooser__color-option--selected');
+      }
     });
 
     this.events();
@@ -493,12 +516,12 @@ var ColorChooser = /*#__PURE__*/function () {
   }, {
     key: "events",
     value: function events() {
-      var _this = this;
+      var _this2 = this;
 
       _classPrivateFieldGet(this, _selButtonUpdate).addEventListener('click', this.onUpdateClick.bind(this));
 
       _classPrivateFieldGet(this, _selColorOptions).forEach(function (el) {
-        return el.addEventListener('click', _this.onColorSelected.bind(_this));
+        return el.addEventListener('click', _this2.onColorSelected.bind(_this2));
       });
     }
   }, {
@@ -570,13 +593,17 @@ var _selModal = /*#__PURE__*/new WeakMap();
 
 var _selPopUp = /*#__PURE__*/new WeakMap();
 
-var _selDialogButtons = /*#__PURE__*/new WeakMap();
+var _selOverlay = /*#__PURE__*/new WeakMap();
+
+var _selCloseButton = /*#__PURE__*/new WeakMap();
 
 var _cssClassFadeIn = /*#__PURE__*/new WeakMap();
 
 var _cssClassFadeOut = /*#__PURE__*/new WeakMap();
 
 var _calendar = /*#__PURE__*/new WeakMap();
+
+var _selDialogChildren = /*#__PURE__*/new WeakMap();
 
 var Modal = /*#__PURE__*/function () {
   // = Modal.MODAL_TYPE.COLOR
@@ -585,7 +612,7 @@ var Modal = /*#__PURE__*/function () {
 
     _currentModal.set(this, {
       writable: true,
-      value: 'xxuuuu'
+      value: void 0
     });
 
     _selModal.set(this, {
@@ -598,9 +625,14 @@ var Modal = /*#__PURE__*/function () {
       value: document.querySelector('.dialog__popup')
     });
 
-    _selDialogButtons.set(this, {
+    _selOverlay.set(this, {
       writable: true,
-      value: document.querySelectorAll('.dialog button')
+      value: document.querySelector('.dialog')
+    });
+
+    _selCloseButton.set(this, {
+      writable: true,
+      value: document.querySelector('.dialog i')
     });
 
     _cssClassFadeIn.set(this, {
@@ -618,9 +650,15 @@ var Modal = /*#__PURE__*/function () {
       value: void 0
     });
 
+    _selDialogChildren.set(this, {
+      writable: true,
+      value: document.querySelectorAll('.dialog *')
+    });
+
     _classPrivateFieldSet(this, _currentModal, modalType);
 
-    if (calendarObj) _classPrivateFieldSet(this, _calendar, calendarObj); //this.events()
+    if (calendarObj) _classPrivateFieldSet(this, _calendar, calendarObj);
+    this.events();
   }
 
   _createClass(Modal, [{
@@ -628,55 +666,80 @@ var Modal = /*#__PURE__*/function () {
     value: function events() {
       var _this = this;
 
-      _classPrivateFieldGet(this, _selDialogButtons).forEach(function (el) {
-        return el.addEventListener('click', _this.closeModal.bind(_this));
+      _classPrivateFieldGet(this, _selDialogChildren).forEach(function (el) {
+        return el.addEventListener('click', function (evt) {
+          return evt.stopPropagation();
+        });
+      });
+
+      _classPrivateFieldGet(this, _selCloseButton).addEventListener('click', function () {
+        return _this.closeModal();
+      });
+
+      _classPrivateFieldGet(this, _selOverlay).addEventListener('click', function () {
+        return _this.closeModal();
       });
     }
   }, {
     key: "attachAnimationEvents",
     value: function attachAnimationEvents() {
-      _classPrivateFieldGet(this, _selModal).addEventListener('animationend', this.toggleModal.bind(this));
-
-      _classPrivateFieldGet(this, _selPopUp).addEventListener('animationend', this.dialogFadeOutAndClose.bind(this));
+      this.attachAnimationPopupEvent();
+      this.attachAnimationDialogEvent();
+    }
+  }, {
+    key: "attachAnimationPopupEvent",
+    value: function attachAnimationPopupEvent() {
+      _classPrivateFieldGet(this, _selPopUp).addEventListener('animationend', this.onPopupAnimationEnds.bind(this), {
+        once: true,
+        capture: true
+      });
+    }
+  }, {
+    key: "attachAnimationDialogEvent",
+    value: function attachAnimationDialogEvent() {
+      _classPrivateFieldGet(this, _selModal).addEventListener('animationend', this.onDialogAnimationEnds.bind(this), {
+        once: true,
+        capture: true
+      });
     }
   }, {
     key: "dettachAnimationEvents",
-    value: function dettachAnimationEvents() {
-      _classPrivateFieldGet(this, _selModal).removeEventListener('animationend', this.toggleModal.bind(this));
-
-      _classPrivateFieldGet(this, _selPopUp).removeEventListener('animationend', this.dialogFadeOutAndClose.bind(this));
+    value: function dettachAnimationEvents() {// this.#selModal.removeEventListener('animationend', this.onPopupAnimationEnds)
+      // this.#selPopUp.removeEventListener('animationend', this.onDialogAnimationEnds)
     }
     /**
      * Animation end event listeners
      */
-    // After this.closeModal() triggers popup clode animation
 
   }, {
-    key: "dialogFadeOutAndClose",
-    value: function dialogFadeOutAndClose(evt) {
-      // avoid parent container (.dialog element overlay)
-      // to receive this event
-      evt.stopPropagation(); // listen only for close animation end not '--open' animation
-
-      if (_classPrivateFieldGet(this, _selPopUp).classList.contains('dialog__popup--close')) {
-        _classPrivateFieldGet(this, _selModal).classList.add(_classPrivateFieldGet(this, _cssClassFadeOut));
+    key: "isEventInPopupContainer",
+    value: function isEventInPopupContainer(evt) {
+      if (evt.target === _classPrivateFieldGet(this, _selModal)) {
+        return true;
       }
+
+      return false;
     }
   }, {
-    key: "modalType",
+    key: "isEventInThisModal",
     get: function get() {
-      switch (_classPrivateFieldGet(this, _currentModal)) {
-        case Modal.MODAL_TYPE.COLOR:
-          return 'COLOR CHOOSE MODAL';
-
-        case Modal.MODAL_TYPE.EDITOR:
-          return 'EDITOR MODAL';
+      // check if parent dialog container has same
+      //if(Array.from(this.#currentModal.closest('.dialog').classList).indexOf(this.modalType) > 0) {
+      if (_classPrivateFieldGet(this, _currentModal).closest('.dialog').classList.contains(this.modalType)) {
+        return true;
       }
-    }
+
+      return false;
+    } // After this.closeModal() triggers popup clode animation
+
   }, {
-    key: "toggleModal",
-    value: function toggleModal() {
-      // waits for end of .dialog overlay element animations
+    key: "onDialogAnimationEnds",
+    value: function onDialogAnimationEnds(evt) {
+      // #selModal is parent container so it receives animend event of its children
+      // this method avoids popup child animation trigger parent's animationend listener code
+      if (!this.isEventInPopupContainer(evt)) return; //console.log('Dialog anim ends')
+      //overlay ends animation toggle correct popup and start popup animation
+
       if (_classPrivateFieldGet(this, _selModal).classList.contains(_classPrivateFieldGet(this, _cssClassFadeIn))) {
         _classPrivateFieldGet(this, _selPopUp).classList.add('dialog__popup--open');
 
@@ -699,6 +762,8 @@ var Modal = /*#__PURE__*/function () {
         // remove all animations
         _classPrivateFieldGet(this, _selModal).classList.remove(_classPrivateFieldGet(this, _cssClassFadeOut));
 
+        _classPrivateFieldGet(this, _selModal).classList.remove(this.modalType);
+
         _classPrivateFieldGet(this, _selPopUp).classList.remove('dialog__popup--open', 'dialog__popup--close');
 
         _classPrivateFieldGet(this, _currentModal).setAttribute('hidden', 'hidden');
@@ -707,9 +772,36 @@ var Modal = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "onPopupAnimationEnds",
+    value: function onPopupAnimationEnds(evt) {
+      evt.stopPropagation(); //console.log('Popup anim ends')
+
+      if (_classPrivateFieldGet(this, _selPopUp).classList.contains('dialog__popup--open')) {//console.log('opened popup')
+      }
+
+      if (_classPrivateFieldGet(this, _selPopUp).classList.contains('dialog__popup--close')) {
+        //console.log('closed popup')
+        this.attachAnimationDialogEvent();
+
+        _classPrivateFieldGet(this, _selModal).classList.add(_classPrivateFieldGet(this, _cssClassFadeOut));
+      }
+    }
+  }, {
+    key: "modalType",
+    get: function get() {
+      switch (_classPrivateFieldGet(this, _currentModal)) {
+        case Modal.MODAL_TYPE.COLOR:
+          return 'color-chooser';
+
+        case Modal.MODAL_TYPE.EDITOR:
+          return 'note-editor';
+      }
+    }
+  }, {
     key: "openModal",
     value: function openModal() {
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _classPrivateFieldGet(this, _currentModal);
+      //console.log('open modal')
       _classPrivateFieldGet(this, _selModal).open = true;
 
       switch (type) {
@@ -724,6 +816,8 @@ var Modal = /*#__PURE__*/function () {
           break;
       }
 
+      _classPrivateFieldGet(this, _selModal).classList.add(_classPrivateFieldGet(this, _currentModal).classList[0]);
+
       _classPrivateFieldGet(this, _selModal).classList.add(_classPrivateFieldGet(this, _cssClassFadeIn)); // Attach animation events here to avoid objects
       // which openModal was not called to appear. If handler is placed in constructor,
       // even objects that were not ordered to open will open
@@ -734,10 +828,17 @@ var Modal = /*#__PURE__*/function () {
     }
   }, {
     key: "closeModal",
-    value: function closeModal() {
+    value: function closeModal(evt) {
+      if (!this.isEventInThisModal) return; //console.log('--------------')
+      //console.log('close modal action')
+      //console.log(Array.from(this.#currentModal.closest('.dialog').classList).pop())
+      //console.log(this.modalType)
+      //console.log('--------------')
+
+      this.attachAnimationPopupEvent();
+
       _classPrivateFieldGet(this, _selPopUp).classList.add('dialog__popup--close');
 
-      this.dettachAnimationEvents();
       if (_classPrivateFieldGet(this, _calendar)) _classPrivateFieldGet(this, _calendar).enableKeyboardNavigation = true;
     }
   }]);
@@ -765,11 +866,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ NoteEditor)
 /* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/modules/utils.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
@@ -781,6 +885,8 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
+
+
 var _calendarObject = /*#__PURE__*/new WeakMap();
 
 var _dialogObject = /*#__PURE__*/new WeakMap();
@@ -789,8 +895,12 @@ var _selButtonPost = /*#__PURE__*/new WeakMap();
 
 var _selButtonDelete = /*#__PURE__*/new WeakMap();
 
+var _selTextarea = /*#__PURE__*/new WeakMap();
+
 var NoteEditor = /*#__PURE__*/function () {
   function NoteEditor(dialogObj, calendarObj) {
+    var _this = this;
+
     _classCallCheck(this, NoteEditor);
 
     _calendarObject.set(this, {
@@ -813,45 +923,126 @@ var NoteEditor = /*#__PURE__*/function () {
       value: document.querySelector('.note-editor .btn--danger')
     });
 
+    _selTextarea.set(this, {
+      writable: true,
+      value: document.querySelector('.note-editor textarea')
+    });
+
     if (dialogObj) _classPrivateFieldSet(this, _dialogObject, dialogObj);
     if (calendarObj) _classPrivateFieldSet(this, _calendarObject, calendarObj);
+    document.body.addEventListener('monthchange', function () {
+      return _this.calendarDayPressEvents();
+    });
     this.events();
   }
 
   _createClass(NoteEditor, [{
     key: "events",
     value: function events() {
-      var _this = this;
-
-      _classPrivateFieldGet(this, _calendarObject).calendarDaysNodeList.forEach(function (el) {
-        return el.addEventListener('click', _this.onDayClick.bind(_this));
-      });
+      this.calendarDayPressEvents();
 
       _classPrivateFieldGet(this, _selButtonPost).addEventListener('click', this.onPostClick.bind(this));
 
       _classPrivateFieldGet(this, _selButtonDelete).addEventListener('click', this.onDeleteClick.bind(this));
     }
   }, {
+    key: "calendarDayPressEvents",
+    value: function calendarDayPressEvents() {
+      var _this2 = this;
+
+      _classPrivateFieldGet(this, _calendarObject).calendarDaysNodeList.forEach(function (el) {
+        return el.addEventListener('click', _this2.onDayClick.bind(_this2));
+      });
+    }
+  }, {
     key: "onDayClick",
     value: function onDayClick(evt) {
-      console.log(evt.target.dataset.uid);
+      var _this3 = this;
+
+      _classPrivateFieldGet(this, _selTextarea).value = '';
+
+      if (NoteEditor.NOTES.has(evt.target.dataset.uid)) {
+        _classPrivateFieldGet(this, _selTextarea).value = NoteEditor.NOTES.get(evt.target.dataset.uid).content;
+      }
+
+      _classPrivateFieldGet(this, _selButtonDelete).style.display = 'block';
+
+      if (_classPrivateFieldGet(this, _selTextarea).value.trim() === '') {
+        _classPrivateFieldGet(this, _selButtonDelete).style.display = 'none';
+      }
 
       _classPrivateFieldGet(this, _dialogObject).openModal();
+
+      setTimeout(function () {
+        _classPrivateFieldGet(_this3, _selTextarea).focus();
+      }, 1000);
     }
   }, {
     key: "onPostClick",
     value: function onPostClick() {
-      _classPrivateFieldGet(this, _dialogObject).closeModal();
+      if (_classPrivateFieldGet(this, _selTextarea).value) {
+        if (NoteEditor.NOTES.has(_classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid)) {
+          //edit record
+          NoteEditor.NOTES.get(_classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid).content = _classPrivateFieldGet(this, _selTextarea).value;
+        } else {
+          // new record
+          NoteEditor.NOTES.set(_classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid, {
+            uid: _classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid,
+            color: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getRandom)(1, 6),
+            content: _classPrivateFieldGet(this, _selTextarea).value
+          });
+        }
+
+        _classPrivateFieldGet(this, _selTextarea).value = '';
+      }
+
+      this.closeOperation();
     }
   }, {
     key: "onDeleteClick",
     value: function onDeleteClick() {
+      if (NoteEditor.NOTES.has(_classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid)) {
+        NoteEditor.NOTES["delete"](_classPrivateFieldGet(this, _calendarObject).lastCellClicked.dataset.uid);
+      }
+
+      this.closeOperation();
+    }
+  }, {
+    key: "closeOperation",
+    value: function closeOperation() {
+      _classPrivateFieldGet(this, _calendarObject).renderCalendar();
+
+      this.calendarDayPressEvents();
+
+      _classPrivateFieldGet(this, _calendarObject).lastCellClicked.click();
+
       _classPrivateFieldGet(this, _dialogObject).closeModal();
     }
   }]);
 
   return NoteEditor;
 }();
+
+_defineProperty(NoteEditor, "NOTES", new Map());
+
+
+
+/***/ }),
+
+/***/ "./src/modules/utils.js":
+/*!******************************!*\
+  !*** ./src/modules/utils.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getRandom": () => (/* binding */ getRandom)
+/* harmony export */ });
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 
 
@@ -960,7 +1151,7 @@ console.log(colorChooser.dialog.modalType)*/
 
 Array.from(document.querySelectorAll('.current-day__btn, .calendar__button .btn')).forEach(function (el) {
   return el.addEventListener('click', function () {
-    return colorChooser.start();
+    colorChooser.start();
   });
 });
 })();

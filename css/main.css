@@ -105,11 +105,16 @@
     margin-right: .2rem;
   }*/
 }
-.calendar__number--has-tooltip:hover {
-  cursor: help;
+.calendar__number--has-tooltip > * {
+  pointer-events: none;
 }
-.calendar__number--has-tooltip:hover span {
-  display: block;
+@media (orientation: landscape) {
+  .calendar__number--has-tooltip:hover {
+    cursor: help;
+  }
+  .calendar__number--has-tooltip:hover span {
+    display: block;
+  }
 }
 .calendar__number--has-tooltip span {
   display: none;
@@ -310,6 +315,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   /*&__popup--open {
     transform: scale(1);
     opacity: 1;
@@ -317,6 +323,14 @@
 }
 .dialog:not([open]) {
   display: none;
+}
+.dialog i.far {
+  cursor: pointer;
+  text-align: right;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 3rem;
 }
 .dialog__popup {
   display: flex;
@@ -555,11 +569,11 @@
   display: inline-block;
 }
 
-.note-editor {
+.dialog .note-editor {
   font-size: calc(2.2rem + 1.6vw);
 }
-.note-editor h3 {
-  margin: 0 0 1rem;
+.dialog .note-editor h3 {
+  margin: 2rem 0 1rem;
   font-size: 1em;
   font-weight: 300;
   /*border-bottom: 1px solid #222;*/
@@ -567,11 +581,11 @@
   text-align: center;
 }
 @media (orientation: landscape) {
-  .note-editor h3 {
+  .dialog .note-editor h3 {
     padding-bottom: 0;
   }
 }
-.note-editor__textarea {
+.dialog .note-editor__textarea {
   font-weight: 600;
   color: var(--black);
   font-size: 0.7em;
@@ -583,10 +597,10 @@
   outline: none;
   resize: none;
 }
-.note-editor__buttons {
+.dialog .note-editor__buttons {
   display: flex;
 }
-.note-editor__buttons .btn {
+.dialog .note-editor__buttons .btn {
   margin-top: 1rem;
 }
 

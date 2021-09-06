@@ -9,6 +9,7 @@ const Modal = require('./modules/modal')
 const calendar = new Calendar()
   //.calendarDate = new Date(2023, 6, 1)
 
+
 /**
  * Create variants of modal popup
  */
@@ -19,6 +20,7 @@ const modalEditor = new Modal(Modal.MODAL_TYPE.EDITOR, calendar)
 //modalEditor.openModal()
 //console.log(modalEditor.modalType)
 
+
 /**
  * Start functionalities by instanciating modules
  */
@@ -28,8 +30,11 @@ const colorChooser = new ColorChooser(modalChooseColor)
 /*colorChooser.dialog.openModal()
 console.log(colorChooser.dialog.modalType)*/
 
+
 /**
  * start ColorChooser by clicking change theme buttons
  */
 Array.from(document.querySelectorAll('.current-day__btn, .calendar__button .btn'))
-  .forEach(el => el.addEventListener('click', () => colorChooser.start()))
+  .forEach(el => el.addEventListener('click', () => {
+    colorChooser.start()
+  }))

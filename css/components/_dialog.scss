@@ -6,9 +6,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   &:not([open]) {
     display: none;
+  }
+
+  i.far {
+    cursor: pointer;
+    text-align: right;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    font-size: 3rem;
   }
 
   &__popup {
@@ -28,14 +39,14 @@
 
   &__popup--open {
     animation-name: popup-fadein;
-    animation-duration: .35s;
+    animation-duration: 0.35s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
   }
 
   &__popup--close {
     animation-name: popup-fadeout;
-    animation-duration: .35s;
+    animation-duration: 0.35s;
     animation-timing-function: ease-out;
   }
 

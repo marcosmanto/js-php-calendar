@@ -1,3 +1,4 @@
+import NoteEditor from "./note-editor"
 export default class Calendar {
   #selCurDay_Day = document.getElementById('cur-day')
   #selCurDay_DayOfWeek = document.getElementById('cur-day-week')
@@ -91,6 +92,7 @@ export default class Calendar {
     if(newDate) {
       this.#data.calendar_date = newDate
       this.renderCalendar()
+      document.body.dispatchEvent(new Event('monthchange'))
     }
   }
 
@@ -111,7 +113,7 @@ export default class Calendar {
       this.lastCellClicked.classList.remove('calendar__number--selected')
     }
     this.lastCellClicked = evt.target
-    evt.target.classList.toggle('calendar__number--selected')
+    evt.target.classList.add('calendar__number--selected')
   }
 
   previousMonth() {
@@ -168,6 +170,7 @@ export default class Calendar {
   }
 
   renderCalendar() {
+    console.log(NoteEditor.NOTES)
     // Set calendar date as first day o month
     //this.#data.calendar_date = new Date(2021, 9, 1)
     this.#data.calendar_date.setDate(1)
@@ -206,9 +209,24 @@ export default class Calendar {
 
     this.renderNextMonthDays(nextMonthDaysToShow)
 
-    //this.#selCalendarCell = Array.from[document.querySelectorAll('.calendar__number')]
+    this.attachNotes()
+
     this.calendarCellEvents()
 
+  }
+
+  attachNotes() {
+    this.calendarDaysNodeList.forEach(el => {
+      if(NoteEditor.NOTES.has(el.dataset.uid)) {
+        el.classList.add('calendar__number--has-tooltip')
+        el.insertAdjacentHTML('beforeend',
+          `
+          <img src="images/note${NoteEditor.NOTES.get(el.dataset.uid).color}.png" alt="Note">
+          <span>${NoteEditor.NOTES.get(el.dataset.uid).content}</span>
+          `.trim()
+        )
+      }
+    })
   }
 
   renderNextMonthDays(numberOfDays) {
