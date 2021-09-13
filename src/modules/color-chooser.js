@@ -1,5 +1,8 @@
 //import Modal from "./modal"
 
+import axios from "axios"
+import qs from "qs"
+
 export default class ColorChooser {
   #selButtonUpdate = document.querySelector('.color-chooser .btn')
   #themeColors = new Map([
@@ -24,16 +27,24 @@ export default class ColorChooser {
 
   constructor(dialogObj) {
     //const colors = Array.from(this.#themeColors.keys())
-    this.#currentThemeColor = 'blue' //colors[Math.floor(Math.random() * colors.length)]
-    this.#dialogObject = dialogObj
-    this.#previousColorSelection = document.querySelector(`.color-chooser [data-selected-color="${this.#currentThemeColor}"]`).parentElement
-    this.#selColorOptions.forEach(el => {
-      el.parentElement.classList.remove('color-chooser__color-option--selected')
-      if(el.dataset.selectedColor === this.#currentThemeColor){
-        el.parentElement.classList.add('color-chooser__color-option--selected')
-      }
-    })
 
+    this.getColorFromServer().then(
+      color => {
+        this.#currentThemeColor = color
+        this.#previousColorSelection = document
+          .querySelector(`.color-chooser [data-selected-color="${this.#currentThemeColor}"]`)
+          .parentElement
+        this.#selColorOptions.forEach(el => {
+          el.parentElement.classList.remove('color-chooser__color-option--selected')
+          if(el.dataset.selectedColor === this.#currentThemeColor){
+            el.parentElement.classList.add('color-chooser__color-option--selected')
+          }
+        })
+        this.updateColor()
+      }
+    )
+
+    this.#dialogObject = dialogObj
     this.events()
   }
 
@@ -46,6 +57,29 @@ export default class ColorChooser {
     this.#selColorOptions.forEach(el => el.addEventListener('click',this.onColorSelected.bind(this)))
   }
 
+  async getColorFromServer(){
+    let response
+    try {
+      response = await axios.post(
+        'index.php',
+        qs.stringify({
+          my_theme: ''
+        }),
+        {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          }
+        }
+      )
+    } catch (error) {
+      console.log('Failed to get user theme color on backend server')
+    }
+
+    console.log('Color from server')
+    //console.log(response?.data ?? 'blue')
+    return response?.data ?? 'blue'
+  }
+
   onColorSelected(evt) {
     if(this.#previousColorSelection) this.#previousColorSelection.classList.remove('color-chooser__color-option--selected')
     this.#previousColorSelection = evt.target.parentElement
@@ -53,7 +87,27 @@ export default class ColorChooser {
     evt.target.parentElement.classList.add('color-chooser__color-option--selected')
   }
 
-  onUpdateClick() {
+  async onUpdateClick() {
+
+    let response
+    try {
+      response = await axios.post(
+        'index.php',
+        qs.stringify({
+          color: this.#currentThemeColor
+        }),
+        {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          }
+        }
+      )
+    } catch (error) {
+      console.log('Failed to change color on backend server')
+    }
+
+    console.log(response ?? 'Response not available (could be a server error)')
+
     this.updateColor()
     this.#dialogObject.closeModal()
   }
