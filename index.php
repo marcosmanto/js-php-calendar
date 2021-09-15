@@ -1,5 +1,7 @@
 <?php
 
+  error_reporting(0);
+
   function getIPAddress()
   {
       //whether ip is from the share internet
@@ -17,11 +19,13 @@
       return $ip;
   }
 
-  $conn = mysqli_connect('localhost', 'root', '1234', 'calendar_app');
+  // - @ supress mysql warning but with error reporting disabled its not necessary
+  //$conn = @mysqli_connect('localhost', 'root', '1234', 'calendar_app');
+  $conn = @mysqli_connect('localhost', 'root', '1234', 'calendar_app');
 
-  if (!$conn) {
+  /*if (!$conn) {
       die('There was an error connecting to the database.');
-  }
+  }*/
 
   $ip = getIPAddress();
 
@@ -36,9 +40,7 @@
           $id = mysqli_fetch_array($result)['id'];
       }
       if ($result && $result->num_rows === 0) {
-          echo '<pre>';
           //print_r('NEW RECORD');
-          echo '</pre>';
           $query = "INSERT INTO theme (current_theme, user_ip) VALUES ('$newTheme', '$ip');";
       } else {
           //print_r('EXISTING RECORD');
@@ -52,7 +54,63 @@
       }
   }
 
+  function dbUpdateNote($note_id, $note_color, $note_text)
+  {
+      global $conn;
+      global $ip;
+
+      $query = "SELECT * from notes WHERE note_id = '$note_id' and user_ip = '$ip'";
+      $result = mysqli_query($conn, $query);
+
+      if ($result && $result->num_rows === 0) {
+          //print_r('NEW RECORD');
+          $query = "INSERT INTO notes (note_id, note_color, note_text, user_ip)
+                    VALUES ('$note_id', '$note_color', '$note_text','$ip');";
+      } else {
+          //print_r("EXISTING RECORD\n");
+          $query = "UPDATE notes
+                    SET note_id = '$note_id',
+                    note_color = $note_color,
+                    note_text = '$note_text'"
+              . " WHERE note_id = '$note_id' and user_ip = '$ip'";
+      }
+
+      $result = mysqli_query($conn, $query);
+
+      if (!$result) {
+          die('Query failed: ' . mysqli_errno($conn));
+      }
+  }
+
+  function dbDeleteNote($note_id)
+  {
+      global $conn;
+      global $ip;
+
+      $query = "SELECT * from notes WHERE note_id = '$note_id' and user_ip = '$ip'";
+      $result = mysqli_query($conn, $query);
+
+      if ($result->num_rows > 0) {
+          $id = mysqli_fetch_array($result)['id'];
+      }
+
+      if ($result && $result->num_rows === 0) {
+          echo "There isn't note with id: " . $note_id;
+          return;
+      } else {
+          $query = 'DELETE FROM notes'
+                 . " WHERE note_id = '$note_id' and user_ip = '$ip'";
+      }
+
+      $result = mysqli_query($conn, $query);
+      if (!$result) {
+          die('Query failed: ' . mysqli_errno($conn));
+      }
+  }
+
+  // primitive API to handle form url encoded POST requests
   if (!empty($_POST)) {
+      // handles request from color-chooser component that loads user theme color
       if (isset($_POST['my_theme'])) {
           $query = "SELECT * from theme WHERE user_ip = '$ip'";
           $result = mysqli_query($conn, $query);
@@ -63,6 +121,7 @@
           }
       }
 
+      // handles request from color-chooser component that changes theme color
       if (isset($_POST['color'])) {
           dbUpdateTheme($_POST['color']);
           echo 'color changed';
@@ -71,6 +130,14 @@
           header('HTTP/1.1 500 Internal Server Error');
           return;
       }
+  }
+
+  // handles POST requests with JSON payload
+  if (!empty(file_get_contents('php://input'))) {
+      $objFromJson = json_decode(file_get_contents('php://input'));
+      dbUpdateNote($objFromJson->uid, $objFromJson->color, $objFromJson->content);
+      echo 'note changed';
+      return;
   }
 
 ?>
@@ -90,6 +157,7 @@
     <title>Calendar App: Build</title>
     <link rel="icon" type="image/png" href="images/icon2.png" sizes="72x72" />
     <link rel="stylesheet" href="css/main.css" />
+    <script defer src="js/app.js"></script>
   </head>
   <body>
     <section class="current-day">
@@ -240,6 +308,5 @@
 
       </div>
     </dialog>
-    <script src="js/app.js"></script>
   </body>
 </html>

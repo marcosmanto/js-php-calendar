@@ -38,3 +38,7 @@ Array.from(document.querySelectorAll('.current-day__btn, .calendar__button .btn'
   .forEach(el => el.addEventListener('click', () => {
     colorChooser.start()
   }))
+
+setTimeout(() => {
+  document.body.style.display = 'flex'
+}, 1100)

@@ -66,6 +66,7 @@ export default class ColorChooser {
           my_theme: ''
         }),
         {
+          timeout: 1000,
           headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
           }
@@ -75,9 +76,11 @@ export default class ColorChooser {
       console.log('Failed to get user theme color on backend server')
     }
 
-    console.log('Color from server')
-    //console.log(response?.data ?? 'blue')
-    return response?.data ?? 'blue'
+    let color = response?.data
+    color = color === '' ? 'blue' : color
+
+    //return response?.data ?? 'blue'
+    return color ?? 'blue'
   }
 
   onColorSelected(evt) {

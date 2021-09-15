@@ -2762,9 +2762,9 @@ var ColorChooser = /*#__PURE__*/function () {
     key: "getColorFromServer",
     value: function () {
       var _getColorFromServer = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().mark(function _callee() {
-        var _response$data, _response;
+        var _response, _color;
 
-        var response;
+        var response, color;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2774,6 +2774,7 @@ var ColorChooser = /*#__PURE__*/function () {
                 return axios__WEBPACK_IMPORTED_MODULE_6___default().post('index.php', qs__WEBPACK_IMPORTED_MODULE_7___default().stringify({
                   my_theme: ''
                 }), {
+                  timeout: 1000,
                   headers: {
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
                   }
@@ -2790,11 +2791,12 @@ var ColorChooser = /*#__PURE__*/function () {
                 console.log('Failed to get user theme color on backend server');
 
               case 9:
-                console.log('Color from server'); //console.log(response?.data ?? 'blue')
+                color = (_response = response) === null || _response === void 0 ? void 0 : _response.data;
+                color = color === '' ? 'blue' : color; //return response?.data ?? 'blue'
 
-                return _context.abrupt("return", (_response$data = (_response = response) === null || _response === void 0 ? void 0 : _response.data) !== null && _response$data !== void 0 ? _response$data : 'blue');
+                return _context.abrupt("return", (_color = color) !== null && _color !== void 0 ? _color : 'blue');
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -3188,12 +3190,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ NoteEditor)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/classPrivateFieldGet */ "./node_modules/@babel/runtime/helpers/esm/classPrivateFieldGet.js");
-/* harmony import */ var _babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/classPrivateFieldSet */ "./node_modules/@babel/runtime/helpers/esm/classPrivateFieldSet.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils */ "./src/modules/utils.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/classPrivateFieldGet */ "./node_modules/@babel/runtime/helpers/esm/classPrivateFieldGet.js");
+/* harmony import */ var _babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/classPrivateFieldSet */ "./node_modules/@babel/runtime/helpers/esm/classPrivateFieldSet.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils */ "./src/modules/utils.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+
+
+
 
 
 
@@ -3215,7 +3225,7 @@ var NoteEditor = /*#__PURE__*/function () {
   function NoteEditor(dialogObj, calendarObj) {
     var _this = this;
 
-    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__.default)(this, NoteEditor);
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__.default)(this, NoteEditor);
 
     _calendarObject.set(this, {
       writable: true,
@@ -3242,29 +3252,29 @@ var NoteEditor = /*#__PURE__*/function () {
       value: document.querySelector('.note-editor textarea')
     });
 
-    if (dialogObj) (0,_babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _dialogObject, dialogObj);
-    if (calendarObj) (0,_babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject, calendarObj);
+    if (dialogObj) (0,_babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_5__.default)(this, _dialogObject, dialogObj);
+    if (calendarObj) (0,_babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_5__.default)(this, _calendarObject, calendarObj);
     document.body.addEventListener('monthchange', function () {
       return _this.calendarDayPressEvents();
     });
     this.events();
   }
 
-  (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__.default)(NoteEditor, [{
+  (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__.default)(NoteEditor, [{
     key: "events",
     value: function events() {
       this.calendarDayPressEvents();
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selButtonPost).addEventListener('click', this.onPostClick.bind(this));
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonPost).addEventListener('click', this.onPostClick.bind(this));
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selButtonDelete).addEventListener('click', this.onDeleteClick.bind(this));
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonDelete).addEventListener('click', this.onDeleteClick.bind(this));
     }
   }, {
     key: "calendarDayPressEvents",
     value: function calendarDayPressEvents() {
       var _this2 = this;
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).calendarDaysNodeList.forEach(function (el) {
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).calendarDaysNodeList.forEach(function (el) {
         return el.addEventListener('click', _this2.onDayClick.bind(_this2));
       });
     }
@@ -3273,50 +3283,95 @@ var NoteEditor = /*#__PURE__*/function () {
     value: function onDayClick(evt) {
       var _this3 = this;
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value = '';
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value = '';
 
       if (NoteEditor.NOTES.has(evt.target.dataset.uid)) {
-        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value = NoteEditor.NOTES.get(evt.target.dataset.uid).content;
+        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value = NoteEditor.NOTES.get(evt.target.dataset.uid).content;
       }
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selButtonDelete).style.display = 'block';
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonDelete).style.display = 'block';
 
-      if ((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value.trim() === '') {
-        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selButtonDelete).style.display = 'none';
+      if ((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value.trim() === '') {
+        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonDelete).style.display = 'none';
       }
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _dialogObject).openModal();
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _dialogObject).openModal();
 
       setTimeout(function () {
-        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(_this3, _selTextarea).focus();
+        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(_this3, _selTextarea).focus();
       }, 1000);
     }
   }, {
     key: "onPostClick",
-    value: function onPostClick() {
-      if ((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value) {
-        if (NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
-          //edit record
-          NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid).content = (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value;
-        } else {
-          // new record
-          NoteEditor.NOTES.set((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid, {
-            uid: (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid,
-            color: (0,_utils__WEBPACK_IMPORTED_MODULE_5__.getRandom)(1, 6),
-            content: (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value
-          });
-        }
+    value: function () {
+      var _onPostClick = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().mark(function _callee() {
+        var _response, response;
 
-        (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _selTextarea).value = '';
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                console.log('post note');
+
+                if (!(0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value) {
+                  _context.next = 16;
+                  break;
+                }
+
+                if (NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
+                  //edit record
+                  NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid).content = (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value;
+                } else {
+                  // new record
+                  NoteEditor.NOTES.set((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid, {
+                    uid: (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid,
+                    color: (0,_utils__WEBPACK_IMPORTED_MODULE_7__.getRandom)(1, 6),
+                    content: (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value
+                  });
+                }
+
+                console.log(NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid));
+                _context.prev = 4;
+                _context.next = 7;
+                return axios__WEBPACK_IMPORTED_MODULE_8___default().post('index.php', NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid));
+
+              case 7:
+                response = _context.sent;
+                _context.next = 14;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](4);
+                console.log(_context.t0);
+                console.log('Failed to change note on backend server');
+
+              case 14:
+                console.log((_response = response) !== null && _response !== void 0 ? _response : 'Response not available (could be a server error)');
+                (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value = '';
+
+              case 16:
+                this.closeOperation();
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[4, 10]]);
+      }));
+
+      function onPostClick() {
+        return _onPostClick.apply(this, arguments);
       }
 
-      this.closeOperation();
-    }
+      return onPostClick;
+    }()
   }, {
     key: "onDeleteClick",
     value: function onDeleteClick() {
-      if (NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
-        NoteEditor.NOTES["delete"]((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.dataset.uid);
+      if (NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
+        NoteEditor.NOTES["delete"]((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid);
       }
 
       this.closeOperation();
@@ -3324,20 +3379,20 @@ var NoteEditor = /*#__PURE__*/function () {
   }, {
     key: "closeOperation",
     value: function closeOperation() {
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).renderCalendar();
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).renderCalendar();
 
       this.calendarDayPressEvents();
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _calendarObject).lastCellClicked.click();
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.click();
 
-      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_3__.default)(this, _dialogObject).closeModal();
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _dialogObject).closeModal();
     }
   }]);
 
   return NoteEditor;
 }();
 
-(0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)(NoteEditor, "NOTES", new Map());
+(0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__.default)(NoteEditor, "NOTES", new Map());
 
 
 
@@ -6605,6 +6660,9 @@ Array.from(document.querySelectorAll('.current-day__btn, .calendar__button .btn'
     colorChooser.start();
   });
 });
+setTimeout(function () {
+  document.body.style.display = 'flex';
+}, 1100);
 })();
 
 /******/ })()

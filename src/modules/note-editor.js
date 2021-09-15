@@ -1,4 +1,5 @@
 import { getRandom } from './utils'
+import axios from 'axios'
 export default class NoteEditor {
   #calendarObject
   #dialogObject
@@ -40,7 +41,8 @@ export default class NoteEditor {
     }, 1000)
   }
 
-  onPostClick() {
+  async onPostClick() {
+    console.log('post note')
     if(this.#selTextarea.value) {
       if(NoteEditor.NOTES.has(this.#calendarObject.lastCellClicked.dataset.uid)) {
         //edit record
@@ -56,6 +58,19 @@ export default class NoteEditor {
           }
         )
       }
+      console.log(NoteEditor.NOTES.get(this.#calendarObject.lastCellClicked.dataset.uid))
+      let response
+      try {
+        response = await axios.post(
+          'index.php',
+          NoteEditor.NOTES.get(this.#calendarObject.lastCellClicked.dataset.uid)
+        )
+      } catch (error) {
+        console.log(error)
+        console.log('Failed to change note on backend server')
+      }
+
+      console.log(response ?? 'Response not available (could be a server error)')
 
       this.#selTextarea.value = ''
     }

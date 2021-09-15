@@ -617,8 +617,8 @@ html {
 }
 
 body {
+  display: none;
   background-color: #FEFDFD;
-  display: flex;
 }
 @media (orientation: portrait) {
   body {
