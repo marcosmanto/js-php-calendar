@@ -1,5 +1,7 @@
 import { getRandom } from './utils'
 import axios from 'axios'
+import qs from 'qs'
+
 export default class NoteEditor {
   #calendarObject
   #dialogObject
@@ -12,13 +14,55 @@ export default class NoteEditor {
     if(dialogObj) this.#dialogObject = dialogObj
     if(calendarObj) this.#calendarObject = calendarObj
     document.body.addEventListener('monthchange', () => this.calendarDayPressEvents())
+    this.getNotesFromServer().then(
+      notes => {
+        if(notes){
+          NoteEditor.NOTES = new Map(notes.map(
+            note =>
+                [
+                  note.note_id,
+                  {
+                    uid: note.note_id,
+                    color: note.note_color,
+                    content: note.note_text
+                  }
+                ]
+            ))
+        }
+        this.#calendarObject.renderCalendar()
+        this.calendarDayPressEvents()
+      }
+    )
+
     this.events()
   }
 
   events() {
-    this.calendarDayPressEvents()
     this.#selButtonPost.addEventListener('click', this.onPostClick.bind(this))
     this.#selButtonDelete.addEventListener('click', this.onDeleteClick.bind(this))
+  }
+
+  async getNotesFromServer(){
+    //console.log('Getting notes from server...')
+    let response
+    try {
+      response = await axios.post(
+        'index.php',
+        qs.stringify({
+          all_notes: ''
+        }),
+        {
+          timeout: 10000,
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          }
+        }
+      )
+    } catch (error) {
+      console.log('Failed to get all notes on backend server')
+    }
+
+    return response?.data
   }
 
   calendarDayPressEvents() {
@@ -77,9 +121,28 @@ export default class NoteEditor {
     this.closeOperation()
   }
 
-  onDeleteClick() {
+  async onDeleteClick() {
     if(NoteEditor.NOTES.has(this.#calendarObject.lastCellClicked.dataset.uid)) {
-      NoteEditor.NOTES.delete(this.#calendarObject.lastCellClicked.dataset.uid)
+      const noteUID = this.#calendarObject.lastCellClicked.dataset.uid
+      let response
+      try {
+        response = await axios.post(
+          'index.php',
+          qs.stringify({
+            note_id: noteUID
+          }),
+          {
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            }
+          }
+        )
+        NoteEditor.NOTES.delete(this.#calendarObject.lastCellClicked.dataset.uid)
+      } catch (error) {
+        console.log('Failed to delete note on backend server')
+      }
+
+      console.log(response ?? 'Response not available (could be a server error)')
     }
     this.closeOperation()
   }

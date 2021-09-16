@@ -2,6 +2,12 @@
 
   error_reporting(0);
 
+  /*
+  if (!empty($_POST)) {
+      print_r($_POST);
+      die();
+  }*/
+
   function getIPAddress()
   {
       //whether ip is from the share internet
@@ -82,6 +88,36 @@
       }
   }
 
+  function dbReadNotes()
+  {
+      global $conn;
+      global $ip;
+
+      $query = "SELECT note_id, note_color, note_text FROM notes
+              WHERE user_ip = '$ip'";
+      $result = mysqli_query($conn, $query);
+
+      if ($result->num_rows > 0) {
+          while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+              $notes[] = $row;
+          }
+          return json_encode($notes);
+      }
+  }
+
+  function dbGetUserThemeColor()
+  {
+      global $ip;
+      global $conn;
+
+      $query = "SELECT * from theme WHERE user_ip = '$ip'";
+      $result = mysqli_query($conn, $query);
+      if ($result->num_rows > 0) {
+          $user_theme = mysqli_fetch_array($result)['current_theme'];
+          echo $user_theme;
+      }
+  }
+
   function dbDeleteNote($note_id)
   {
       global $conn;
@@ -99,7 +135,7 @@
           return;
       } else {
           $query = 'DELETE FROM notes'
-                 . " WHERE note_id = '$note_id' and user_ip = '$ip'";
+                 . " WHERE ID = $id";
       }
 
       $result = mysqli_query($conn, $query);
@@ -112,19 +148,22 @@
   if (!empty($_POST)) {
       // handles request from color-chooser component that loads user theme color
       if (isset($_POST['my_theme'])) {
-          $query = "SELECT * from theme WHERE user_ip = '$ip'";
-          $result = mysqli_query($conn, $query);
-          if ($result->num_rows > 0) {
-              $user_theme = mysqli_fetch_array($result)['current_theme'];
-              echo $user_theme;
-              return;
-          }
+          dbGetUserThemeColor();
+          return;
       }
 
       // handles request from color-chooser component that changes theme color
       if (isset($_POST['color'])) {
           dbUpdateTheme($_POST['color']);
           echo 'color changed';
+          return;
+      } elseif (isset($_POST['all_notes'])) {
+          echo dbReadNotes();
+          return;
+      } elseif (isset($_POST['note_id'])) {
+          // handles request from note-editor component that deletes a note
+          dbDeleteNote($_POST['note_id']);
+          echo 'note deleted';
           return;
       } else {
           header('HTTP/1.1 500 Internal Server Error');

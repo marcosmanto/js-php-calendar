@@ -170,7 +170,8 @@ export default class Calendar {
   }
 
   renderCalendar() {
-    console.log(NoteEditor.NOTES)
+    //console.log(NoteEditor.NOTES)
+
     // Set calendar date as first day o month
     //this.#data.calendar_date = new Date(2021, 9, 1)
     this.#data.calendar_date.setDate(1)

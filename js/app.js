@@ -2503,9 +2503,9 @@ var Calendar = /*#__PURE__*/function () {
   }, {
     key: "renderCalendar",
     value: function renderCalendar() {
-      console.log(_note_editor__WEBPACK_IMPORTED_MODULE_5__.default.NOTES); // Set calendar date as first day o month
+      //console.log(NoteEditor.NOTES)
+      // Set calendar date as first day o month
       //this.#data.calendar_date = new Date(2021, 9, 1)
-
       (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _data).calendar_date.setDate(1);
 
       var firstDayOfMonthWeekIndex = (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _data).calendar_date.getDay();
@@ -3201,6 +3201,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils */ "./src/modules/utils.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -3257,18 +3260,80 @@ var NoteEditor = /*#__PURE__*/function () {
     document.body.addEventListener('monthchange', function () {
       return _this.calendarDayPressEvents();
     });
+    this.getNotesFromServer().then(function (notes) {
+      if (notes) {
+        NoteEditor.NOTES = new Map(notes.map(function (note) {
+          return [note.note_id, {
+            uid: note.note_id,
+            color: note.note_color,
+            content: note.note_text
+          }];
+        }));
+      }
+
+      (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(_this, _calendarObject).renderCalendar();
+
+      _this.calendarDayPressEvents();
+    });
     this.events();
   }
 
   (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__.default)(NoteEditor, [{
     key: "events",
     value: function events() {
-      this.calendarDayPressEvents();
-
       (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonPost).addEventListener('click', this.onPostClick.bind(this));
 
       (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selButtonDelete).addEventListener('click', this.onDeleteClick.bind(this));
     }
+  }, {
+    key: "getNotesFromServer",
+    value: function () {
+      var _getNotesFromServer = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().mark(function _callee() {
+        var _response;
+
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_8___default().post('index.php', qs__WEBPACK_IMPORTED_MODULE_9___default().stringify({
+                  all_notes: ''
+                }), {
+                  timeout: 10000,
+                  headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                  }
+                });
+
+              case 3:
+                response = _context.sent;
+                _context.next = 9;
+                break;
+
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](0);
+                console.log('Failed to get all notes on backend server');
+
+              case 9:
+                return _context.abrupt("return", (_response = response) === null || _response === void 0 ? void 0 : _response.data);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 6]]);
+      }));
+
+      function getNotesFromServer() {
+        return _getNotesFromServer.apply(this, arguments);
+      }
+
+      return getNotesFromServer;
+    }()
   }, {
     key: "calendarDayPressEvents",
     value: function calendarDayPressEvents() {
@@ -3304,17 +3369,17 @@ var NoteEditor = /*#__PURE__*/function () {
   }, {
     key: "onPostClick",
     value: function () {
-      var _onPostClick = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().mark(function _callee() {
-        var _response, response;
+      var _onPostClick = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().mark(function _callee2() {
+        var _response2, response;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 console.log('post note');
 
                 if (!(0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value) {
-                  _context.next = 16;
+                  _context2.next = 16;
                   break;
                 }
 
@@ -3331,23 +3396,23 @@ var NoteEditor = /*#__PURE__*/function () {
                 }
 
                 console.log(NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid));
-                _context.prev = 4;
-                _context.next = 7;
+                _context2.prev = 4;
+                _context2.next = 7;
                 return axios__WEBPACK_IMPORTED_MODULE_8___default().post('index.php', NoteEditor.NOTES.get((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid));
 
               case 7:
-                response = _context.sent;
-                _context.next = 14;
+                response = _context2.sent;
+                _context2.next = 14;
                 break;
 
               case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](4);
-                console.log(_context.t0);
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](4);
+                console.log(_context2.t0);
                 console.log('Failed to change note on backend server');
 
               case 14:
-                console.log((_response = response) !== null && _response !== void 0 ? _response : 'Response not available (could be a server error)');
+                console.log((_response2 = response) !== null && _response2 !== void 0 ? _response2 : 'Response not available (could be a server error)');
                 (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _selTextarea).value = '';
 
               case 16:
@@ -3355,10 +3420,10 @@ var NoteEditor = /*#__PURE__*/function () {
 
               case 17:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this, [[4, 10]]);
+        }, _callee2, this, [[4, 10]]);
       }));
 
       function onPostClick() {
@@ -3369,13 +3434,61 @@ var NoteEditor = /*#__PURE__*/function () {
     }()
   }, {
     key: "onDeleteClick",
-    value: function onDeleteClick() {
-      if (NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
-        NoteEditor.NOTES["delete"]((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid);
+    value: function () {
+      var _onDeleteClick = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().mark(function _callee3() {
+        var _response3, noteUID, response;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_6___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!NoteEditor.NOTES.has((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid)) {
+                  _context3.next = 13;
+                  break;
+                }
+
+                noteUID = (0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid;
+                _context3.prev = 2;
+                _context3.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_8___default().post('index.php', qs__WEBPACK_IMPORTED_MODULE_9___default().stringify({
+                  note_id: noteUID
+                }), {
+                  headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                  }
+                });
+
+              case 5:
+                response = _context3.sent;
+                NoteEditor.NOTES["delete"]((0,_babel_runtime_helpers_classPrivateFieldGet__WEBPACK_IMPORTED_MODULE_4__.default)(this, _calendarObject).lastCellClicked.dataset.uid);
+                _context3.next = 12;
+                break;
+
+              case 9:
+                _context3.prev = 9;
+                _context3.t0 = _context3["catch"](2);
+                console.log('Failed to delete note on backend server');
+
+              case 12:
+                console.log((_response3 = response) !== null && _response3 !== void 0 ? _response3 : 'Response not available (could be a server error)');
+
+              case 13:
+                this.closeOperation();
+
+              case 14:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[2, 9]]);
+      }));
+
+      function onDeleteClick() {
+        return _onDeleteClick.apply(this, arguments);
       }
 
-      this.closeOperation();
-    }
+      return onDeleteClick;
+    }()
   }, {
     key: "closeOperation",
     value: function closeOperation() {
